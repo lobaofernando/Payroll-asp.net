@@ -1,0 +1,45 @@
+﻿<h2>@ViewBag.Title</h2>
+<h5>@ViewBag.Message</h5>
+<script>
+    function change(value) {
+        document.getElementById("tipo").value = value;
+    }
+</script>
+<form action="/Login/Registrar" method="post">
+    <div class="row  col-md-offset-3">
+        <input type="hidden" id="tipo" name="tipo" readonly value="1" />
+        <label class="col-sm-2" for="tipo">Tipo da conta</label>
+        <div class="col-sm-6">
+            <input type="radio" onclick="change(1)" class="btn-check" name="tipos" id="option1" autocomplete="off" checked>
+            <label class="btn btn-secondary" for="option1">Pessoa Física</label>
+
+            <input type="radio" onclick="change(2)" class="btn-check" name="tipos" id="option2" autocomplete="off">
+            <label class="btn btn-secondary" for="option2">Pessoa Jurídica</label>
+        </div>
+    </div>
+    <div class="row col-md-offset-3">
+        <label class="col-sm-2" for="nome">Nome</label>
+        <div class="col-sm-6">
+            <input class="form-control" type="text" id="nome" name="nome" />
+        </div>
+    </div>
+    <div class="row col-md-offset-3">
+        <label class="col-sm-2" for="email">E-mail</label>
+        <div class="col-sm-6">
+            <input class="form-control" type="email" id="email" name="email" />
+        </div>
+    </div>
+
+    <div class="row col-md-offset-3">
+        <label class="col-sm-2" for="senha">Senha</label>
+        <div class="col-sm-6">
+            <input class="form-control" type="password" id="senha" name="senha" />
+        </div>
+    </div>
+    <br />
+    <div class="button">
+        <button type="submit">Registrar</button>
+        <button type="reset"><a style="text-decoration: none; color: black" href="/Login/Index">Já possuo cadastro</a></button>
+    </div>
+    <p style="color: red">@ViewBag.Erro</p>
+</form>

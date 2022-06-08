@@ -1,0 +1,114 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<script>
+
+    var euro = 0;
+    var dolar = 0;
+
+    const url = "https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL"
+    window.onload = fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+            euro = data.EURBRL.ask;
+            dolar = data.USDBRL.ask;
+        });
+
+    function change(value) {
+        document.getElementById("moeda").value = value;
+        if (value == 1) {
+            document.getElementById("symbol").value = "$";
+            return dolar;
+        } else {
+            document.getElementById("symbol").value = "€";
+            return euro;
+        }
+    }
+    function percent(number) {
+        var p = 0;
+        if (number < 1903.98) {
+            p=0;
+        } else if (number >= 1903.98 && number < 2826.65) {
+            p = 0.075;
+        } else if (number >= 2826.65 && number < 3751.06) {
+            p = 0.15;
+        } else if (number >= 3751.06 && number < 4664.69) {
+            p=0.225;
+        } else if (number > 4664.68) {
+            p=0.275;
+        }
+        return p;
+    }
+    function calcular(value = document.getElementById("moeda").value) {
+        var moeda = change(value);
+        var valor = document.getElementById("valor").value;
+        var convertido = valor * moeda;
+        var porcentagem = percent(convertido);
+        var imposto = convertido * porcentagem;
+        var salario = convertido - imposto;
+
+        document.getElementById("convertido").textContent = convertido.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        document.getElementById("porcentagem").textContent = (porcentagem*100).toFixed(1) +" %";
+        document.getElementById("imposto").textContent = imposto.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        document.getElementById("salario").textContent = salario.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+    }
+</script>
+<div class="jumbotron">
+    <h2>Calcular</h2>
+    <div>
+        <p class="lead">
+            Insira o valor na moeda de origem e pressione enter:
+        </p>
+    </div>
+    <div class="row col-md-offset-2">
+        <label class="col-sm-2 col-form-label" for="valor">Valor <span id="symbol">$</span></label>
+        <div class="col-sm-7">
+            <input class="form-control" onchange="calcular(document.getElementById('moeda').value)" type="number" id="valor" name="valor" />
+        </div>
+    </div>
+    <br />
+    <div class="row col-md-offset-2">
+        <input type="hidden" id="moeda" name="moeda" readonly value=1 />
+        <label class="col-sm-2" for="moeda">Moeda</label>
+        <div class="col-sm-5">
+            <input type="radio" onclick="calcular(1)" class="btn-check" name="moedas" id="option1" autocomplete="off" checked>
+            <label class="btn btn-secondary" for="option1">Dólar</label>
+
+            <input type="radio" onclick="calcular(2)" class="btn-check" name="moedas" id="option2" autocomplete="off">
+            <label class="btn btn-secondary" for="option2">Euro</label>
+        </div>
+    </div>
+    <div style="background-color: white; border-color: black; border-radius: 2px; margin: 10px">
+        <table class="table table-success table-striped">
+            <tr>
+                <td>Valor Convertido</td>
+                <td id="convertido">Resultado</td>
+            </tr>
+            <tr>
+                <td>Porcentagem de Imposto</td>
+                <td id="porcentagem">Resultado</td>
+            </tr>
+            <tr>
+                <td>Imposto Total</td>
+                <td id="imposto">Resultado</td>
+            </tr>
+            <tr>
+                <td>Salário Final</td>
+                <td id="salario">Resultado</td>
+            </tr>
+        </table>
+    </div>
+</div>
+    <div class="row">
+        @if (WebApplication3.Models.Global.Logado)
+        {
+            <a href="/Home/Vagas" class="btn btn-primary btn-lg">Conferir Vagas &raquo;</a>
+        }
+        else
+        {
+            <a href="/Login" class="btn btn-primary btn-lg">Login &raquo;</a>
+            <a href="/Login/Register" class="btn btn-primary btn-lg">Registrar-se &raquo;</a>
+        }
+    </div>

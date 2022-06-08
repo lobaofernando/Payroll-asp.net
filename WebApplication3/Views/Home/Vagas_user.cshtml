@@ -1,0 +1,40 @@
+﻿<div class="jumbotron">
+    <p class="lead">
+        <h1>@ViewBag.Title</h1>
+    </p>
+</div>
+<div><a href="/Vagas/Adicionar" class="btn btn-primary btn-lg">Adicionar Vaga &raquo;</a></div>
+<div><h2>Vagas adicionadas recentemente:</h2></div>
+<br />
+<div class="row">
+    @foreach (var item in ViewBag.Lista)
+    {
+        <input type="hidden" id="regi" name="regi" value="@item.Regiao" />
+        <div class="col-md-4 card">
+            <a href="/vagas/visualizar/@item.Id"><h2 style="font-weight: bolder; min-height: 7rem; color: black">@item.Nome</h2></a>
+            <p style="min-height: 4rem">@item.Previa</p>
+            <p>Criado por: @item.NomeCriador</p>
+            <p>Região: @item.Regiao</p>
+            @if (@item.Link.Contains("http"))
+            {
+                <p>Link: <a href="@item.Link" target="_blank">Clique aqui para redirecionar &raquo;</a></p>
+            }
+            else
+            {
+                <p>Link: <a href="//@item.Link" target="_blank">Clique aqui para redirecionar &raquo;</a></p>
+            }
+            @if (item.Moeda == 1)
+            {
+                <h4>Moeda: Dólar $</h4>
+                <h4>Valor: $ @item.Valor</h4>
+            }
+            else
+            {
+                <h4>Moeda: Euro €</h4>
+                <h4>Valor: € @item.Valor</h4>
+            }
+            <p><a class="btn btn-default" href="/Vagas/Editar/@item.Id">Editar vaga &raquo;</a></p>
+            <p><a class="btn btn-default" href="/Vagas/Excluir/@item.Id">Excluir vaga &raquo;</a></p>
+        </div>
+    }
+</div>

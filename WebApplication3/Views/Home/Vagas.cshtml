@@ -1,0 +1,46 @@
+﻿<div class="jumbotron">
+    <p class="lead">
+        <h1>@ViewBag.Title</h1>
+    </p>
+</div>
+    Filtrar vagas por Região:
+<a class="btn btn-primary" href="/home/vagas/" role="button">TODAS</a>
+<a class="btn btn-primary" href="/home/filtrar/1" role="button">EUROPA</a>
+<a class="btn btn-primary" href="/home/filtrar/2" role="button">AMÉRICA</a>
+<a class="btn btn-primary" href="/home/filtrar/3" role="button">ÁSIA</a>
+<a class="btn btn-primary" href="/home/filtrar/4" role="button">ÁFRICA</a>
+<a class="btn btn-primary" href="/home/filtrar/5" role="button">OCEANIA</a>
+<br />
+<br />
+<h3>Vagas encontradas:</h3>
+<div class="row">
+    @foreach (var item in ViewBag.Lista)
+    {
+        <input type="hidden" id="regi" name="regi" value="@item.Regiao" />
+        <div class="col-md-4 card">
+            <a href="/vagas/visualizar/@item.Id"><h2 style="font-weight: bolder; min-height: 7rem; color: black">@item.Nome</h2></a>
+            <p style="min-height: 4rem">@item.Previa</p>
+            <p>Criado por: @item.NomeCriador</p>
+            <p>Região: @item.Regiao</p>
+            @if (@item.Link.Contains("http"))
+            {
+                <p>Link: <a href="@item.Link" target="_blank">Clique aqui para redirecionar &raquo;</a></p>
+            }
+            else
+            {
+                <p>Link: <a href="//@item.Link" target="_blank">Clique aqui para redirecionar &raquo;</a></p>
+            }
+            @if (item.Moeda == 1)
+            {
+                <h4>Moeda: Dólar $</h4>
+                <h4>Valor: $ @item.Valor</h4>
+            }
+            else
+            {
+                <h4>Moeda: Euro €</h4>
+                <h4>Valor: € @item.Valor</h4>
+            }
+            <p><a class="btn btn-default" href="/Vagas/Visualizar/@item.Id">Ver mais &raquo;</a></p>
+        </div>
+    }
+</div>

@@ -1,0 +1,73 @@
+﻿@{
+    var vaga = ViewBag.Vaga;
+}
+
+<h2>@ViewBag.Title</h2>
+<h3>@ViewBag.Message</h3>
+
+<form action="/Vagas/excluir" method="post">
+    <div class="row  col-md-offset-3">
+        <input type="hidden" id="moedas" name="moeda" readonly value="@vaga.Moeda" />
+        <label class="col-sm-2" for="moeda">Moeda</label>
+        <div class="col-sm-6">
+            @if (vaga.Moeda == 1)
+            {
+                <input type="radio" class="btn-check" name="moedas" id="option1" autocomplete="off" checked disabled>
+                <label class="btn btn-secondary" for="option1">Dólar</label>
+
+                <input type="radio" class="btn-check" name="moedas" id="option2" autocomplete="off" disabled>
+                <label class="btn btn-secondary" for="option2">Euro</label>
+            }
+            else
+            {
+                <input type="radio" onclick="change(1)" class="btn-check" name="moedas" id="option1" autocomplete="off" disabled>
+                <label class="btn btn-secondary" for="option1">Dólar</label>
+
+                <input type="radio" onclick="change(2)" class="btn-check" name="moedas" id="option2" autocomplete="off" checked disabled>
+                <label class="btn btn-secondary" for="option2">Euro</label>
+            }
+        </div>
+    </div>
+    <div class="row col-md-offset-3">
+        <input type="hidden" id="id" name="id" value="@vaga.Id" />
+        <label class="col-sm-2 col-form-label" for="nome">Nome</label>
+        <div class="col-sm-6">
+            <input class="form-control" type="text" readonly id="nome" name="nome" value="@vaga.Nome" />
+        </div>
+    </div>
+    <div class="row col-md-offset-3">
+        <label class="col-sm-2" for="descricao">Descricao</label>
+        <div class="col-sm-6">
+            <input class="form-control" type="text" readonly id="descricao" name="descricao" value="@vaga.Descricao" />
+        </div>
+    </div>
+    <div class="row  col-md-offset-3">
+        <label class="col-sm-2" for="criador">Criador</label>
+        <div class="col-sm-6">
+            <input class="form-control" type="text" readonly id="criador" name="criador" value="@vaga.Criador" />
+        </div>
+    </div>
+    <div class="row col-md-offset-3">
+        <label class="col-sm-2" for="link">Link</label>
+        <div class="col-sm-6">
+            <input class="form-control" type="text" readonly id="link" name="link" value="@vaga.Link" />
+        </div>
+    </div>
+    <div class="row  col-md-offset-3">
+        <label class="col-sm-2" for="moeda">Moeda</label>
+        <div class="col-sm-6">
+            <input class="form-control" type="text" readonly id="moeda" name="moeda" value="@vaga.Moeda" />
+        </div>
+    </div>
+    <div class="row col-md-offset-3">
+        <label class="col-sm-2" for="valor">Valor</label>
+        <div class="col-sm-6">
+            <input class="form-control" type="text" readonly id="valor" name="valor" value="@vaga.Valor" />
+        </div>
+    </div>
+    <br />
+    <div class="button">
+        <button type="submit">Salvar</button>
+        <button type="reset"><a style="text-decoration: none; color: black" href="/Home/Vagas_User">Cancelar</a></button>
+    </div>
+</form>

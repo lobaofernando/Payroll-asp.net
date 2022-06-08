@@ -1,0 +1,101 @@
+﻿@{
+    var vaga = ViewBag.Vaga;
+}
+
+<h2>@ViewBag.Title</h2>
+<h3>@ViewBag.Message</h3>
+<script>
+    function change(value) {
+        document.getElementById("moeda").value = value;
+    }
+    function change2(value) {
+        document.getElementById("regiao").value = value;
+    }
+    window.onload = function () {
+        document.getElementById(document.getElementById("regiao").value).checked = true;
+        console.log(document.getElementById("regiao").value);
+    };
+</script>
+<form action="/Vagas/salvar" method="post">
+    <div class="row  col-md-offset-3">
+        <input type="hidden" id="moeda" name="moeda" readonly value="@vaga.Moeda" />
+        <label class="col-sm-2" for="moeda">Moeda</label>
+        <div class="col-sm-6">
+            @if (vaga.Moeda == 1)
+            {
+                <input type="radio" onclick="change(1)" class="btn-check" name="moedas" id="option1" autocomplete="off" checked>
+                <label class="btn btn-secondary" for="option1">Dólar</label>
+
+                <input type="radio" onclick="change(2)" class="btn-check" name="moedas" id="option2" autocomplete="off">
+                <label class="btn btn-secondary" for="option2">Euro</label>
+            }
+            else
+            {
+                <input type="radio" onclick="change(1)" class="btn-check" name="moedas" id="option1" autocomplete="off">
+                <label class="btn btn-secondary" for="option1">Dólar</label>
+
+                <input type="radio" onclick="change(2)" class="btn-check" name="moedas" id="option2" autocomplete="off" checked>
+                <label class="btn btn-secondary" for="option2">Euro</label>
+            }
+        </div>
+    </div>
+    <div class="row col-md-offset-3">
+        <input type="hidden" id="id" name="id" value="@vaga.Id" />
+        <label class="col-sm-2 col-form-label" for="nome">Nome</label>
+        <div class="col-sm-6">
+            <input class="form-control" type="text" id="nome" name="nome" value="@vaga.Nome" />
+        </div>
+    </div>
+    <div class="row col-md-offset-3">
+        <label class="col-sm-2" for="previa">Prévia</label>
+        <div class="col-sm-6">
+            <input class="form-control" type="text" id="previa" name="previa" value="@vaga.Previa" />
+        </div>
+    </div>
+    <div class="row col-md-offset-3">
+        <label class="col-sm-2" for="link">Link</label>
+        <div class="col-sm-6">
+            <input class="form-control" type="text" id="link" name="link" value="@vaga.Link"/>
+        </div>
+    </div>
+    <div class="row  col-md-offset-3">
+        <label class="col-sm-2" for="descricao">Descrição</label>
+        <div class="col-sm-6">
+            <textarea name="descricao" class="form-control" id="descricao" rows="4">@vaga.Descricao</textarea>
+        </div>
+    </div>
+    <div class="row  col-md-offset-3">
+        <br />
+        <input type="hidden" id="regiao" name="regiao" readonly value="@vaga.Regiao" />
+        <label class="col-sm-1" for="regiao">Região:</label>
+        <div class="col-sm-8">
+            <input type="radio" onclick="change2(1)" class="btn-check" name="regioes" id="EUROPA" autocomplete="off">
+            <label class="btn btn-secondary" for="EUROPA">Europa</label>
+            <input type="radio" onclick="change2(2)" class="btn-check" name="regioes" id="AMERICA" autocomplete="off">
+            <label class="btn btn-secondary" for="AMERICA">América</label>
+            <input type="radio" onclick="change2(3)" class="btn-check" name="regioes" id="ASIA" autocomplete="off">
+            <label class="btn btn-secondary" for="ASIA">Ásia</label>
+            <input type="radio" onclick="change2(4)" class="btn-check" name="regioes" id="AFRICA" autocomplete="off">
+            <label class="btn btn-secondary" for="AFRICA">África</label>
+            <input type="radio" onclick="change2(5)" class="btn-check" name="regioes" id="OCEANIA" autocomplete="off">
+            <label class="btn btn-secondary" for="OCEANIA">Oceania</label>
+
+            <input type="radio" onclick="change2(0)" class="btn-check" name="regioes" id="op0" autocomplete="off">
+            <label class="btn btn-secondary" for="op0">Outro</label>
+        </div>
+        <br />
+        <br />
+        <br />
+    </div>
+    <div class="row col-md-offset-3">
+        <label class="col-sm-2" for="valor">Valor</label>
+        <div class="col-sm-6">
+            <input class="form-control" type="text" id="valor" name="valor" value="@vaga.Valor" />
+        </div>
+    </div>
+    <br />
+    <div class="button">
+        <button type="submit">Salvar</button>
+        <button type="reset"><a style="text-decoration: none; color: black" href="/Home/Vagas_User">Cancelar</a></button>
+    </div>
+</form>

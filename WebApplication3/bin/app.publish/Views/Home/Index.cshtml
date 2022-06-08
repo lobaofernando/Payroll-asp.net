@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<div class="jumbotron">
+    <h1>Payroll</h1>
+    <p class="lead">
+        Payroll é um portal gratuito onde é possível visualizar o imposto
+        cobrado sobre seu salário vindo do exterior. Insira o valor do
+        salário MENSAL abaixo para realizar o cálculo ou cadastre-se para
+        ver vagas cadastradas por empresas estrangeiras..
+    </p>
+    @if (WebApplication3.Models.Global.Logado)
+    {
+        <p><a href="/Home/Vagas" class="btn btn-primary btn-lg">Conferir Vagas &raquo;</a></p>
+        <p><a href="/Home/Calcular" class="btn btn-primary btn-lg">Fazer Simulação &raquo;</a></p> }
+    else
+    {
+        <p><a href="/Login" class="btn btn-primary btn-lg">Login &raquo;</a></p>
+        <p><a href="/Login/Register" class="btn btn-primary btn-lg">Registrar-se &raquo;</a></p>
+    }
+
+</div>

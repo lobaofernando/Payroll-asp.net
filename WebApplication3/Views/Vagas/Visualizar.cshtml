@@ -1,0 +1,225 @@
+﻿<script>
+
+    var euro = 0;
+    var dolar = 0;
+
+    const url = "https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL"
+    window.onload = fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+            euro = data.EURBRL.ask;
+            dolar = data.USDBRL.ask;
+            calcular();
+        });
+
+
+    function percent(number) {
+        var p = 0;
+        if (number < 1903.98) {
+            p = 0;
+        } else if (number >= 1903.98 && number < 2826.65) {
+            p = 0.075;
+        } else if (number >= 2826.65 && number < 3751.06) {
+            p = 0.15;
+        } else if (number >= 3751.06 && number < 4664.69) {
+            p = 0.225;
+        } else if (number > 4664.68) {
+            p = 0.275;
+        }
+        return p;
+    }
+
+    
+//Faixa de salário	Alíquota de contribuição
+//        Até um salário mínimo(R$ 1.212)	7, 5 %
+//        De R$ 1.212, 01 a R$ 2.427, 79	9 %
+//        De R$ 2.427, 80 a R$ 3.641, 69	12 %
+//        De R$ 3.641, 70 a R$ 7.088, 50(Teto do INSS) 14 %
+    function INSS2(number) {
+        var p = 0;
+        var section0 = 0;
+        var section1 = 0;
+        var section2 = 0;
+        var section3 = 0;
+        var base_calc = number;
+
+        if (number > 7088.5) {
+            base_calc = 7088.5;
+            section0 = 1212;
+            section1 = 2427.79 - 1212.01;
+            section2 = 3641.69 - 2427.8;
+            section3 = base_calc - 3641.7;
+            console.log(base_calc);
+            console.log(section0);
+            console.log(section1);
+            console.log(section2);
+            console.log(section3);
+
+        }
+        if (base_calc >= 3641.7 && base_calc < 7088.5) {
+            section0 = 1212;
+            section1 = 2427.79 - 1212.01;
+            section2 = 3641.69 - 2427.79;
+            section3 = base_calc - 3641.7;
+        } else if (base_calc >= 2427.79 && base_calc <= 3641.7) {
+            section0 = 1212;
+            section1 = 2427.79 - 1212.01;
+            section2 = base_calc - 2427.79;
+        } else if (base_calc >= 1212.01 && base_calc <= 2427.79) {
+            section0 = 1212;
+            section1 = base_calc - 1212.01;
+        } else if (base_calc <= 1212) {
+            section0 = base_calc;
+        }
+
+        p += section0 * 0.075;
+        p += section1 * 0.09;
+        p += section2 * 0.12;
+        p += section3 * 0.14;
+        console.log(section0);
+        console.log(section1);
+        console.log(section2);
+        console.log(section3);
+        console.log(p)
+        return p;
+    }
+    function INSS(number) {
+        var p = 0;
+        var base_calc = number;
+
+        if (number > 7088.5) {
+            base_calc = 7088.5;
+        }
+        if (base_calc > 1212) {
+            p = base_calc * 0.2;
+        } else {
+            p = base_calc * 0.11
+        }
+        console.log(p)
+        return p;
+    }
+    function calcular(num = 0) {
+        var moeda = @ViewBag.vaga.Moeda;
+        var valor = @ViewBag.valor;
+        var inss = 0;
+        console.log(valor);
+        console.log(moeda);
+        console.log(dolar, euro);
+        if (moeda == 1) {
+            moeda = (dolar * 135) / 135;
+            document.getElementById("cotacaonome").textContent = "Cotação do Dólar";
+        } else {
+            moeda = (euro * 135) / 135;
+            document.getElementById("cotacaonome").textContent = "Cotação do Euro";
+        }
+        document.getElementById("cotacao").textContent = moeda.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        console.log(moeda);
+        var convertido = valor * moeda;
+        var porcentagem = percent(convertido);
+        var imposto = convertido * porcentagem;
+
+        if (num == 1) {
+            inss = INSS(convertido);
+            document.getElementById("inss").textContent = inss.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            document.getElementById("hideinss").style.display = "";
+        } else {
+            document.getElementById("hideinss").style.display = "none";
+        }
+
+        var salario = convertido - imposto - inss;
+        console.log(convertido, porcentagem, imposto, salario)
+        document.getElementById("convertido").textContent = convertido.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        document.getElementById("porcentagem").textContent = (porcentagem * 100).toFixed(1) + " %";
+        document.getElementById("imposto").textContent = imposto.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        document.getElementById("salario").textContent = salario.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+
+    }
+</script>
+<div class="jumbotron" style="text-align: left;">
+    <h1>@ViewBag.vaga.Nome</h1>
+</div>
+<div style="text-align: left;">
+    <div class="row  col-md-offset-0">
+        <input type="hidden" id="regi" name="regi" value="@ViewBag.vaga.Regiao" />
+        <div class="col-md-6 texto" style="font-size: 2rem;">
+            <p>
+                <span style="font-weight: bolder;">Descrição: &nbsp;&nbsp;&nbsp;</span>@ViewBag.vaga.Previa
+            </p>
+            <p><span style="font-weight: bolder;">Criado por:  &nbsp;&nbsp;&nbsp;</span> @ViewBag.vaga.NomeCriador</p>
+            <p><span style="font-weight: bolder;">Região: &nbsp;</span> @ViewBag.vaga.Regiao</p>
+            <p><span style="font-weight: bolder;">País: &nbsp;</span>@ViewBag.vaga.Pais</p>
+            @if (ViewBag.vaga.Link.Contains("http"))
+            {
+                <p><span style="font-weight: bolder;">Link: &nbsp;</span><a href="@ViewBag.vaga.Link" target="_blank">Clique aqui para redirecionar  &raquo;</a></p>
+
+            }
+            else
+            {
+                <p><span style="font-weight: bolder;">Link: &nbsp;</span><a href="//@ViewBag.vaga.Link" target="_blank">Clique aqui para redirecionar  &raquo;</a></p>
+            }
+            @if (ViewBag.vaga.Moeda == 1)
+            {
+                <h4 style="font-weight: bolder;">Moeda: <span id="moeda">Dólar</span> $</h4>
+                <h4 style="font-weight: bolder; font-size: 3rem;">Valor:  &nbsp;&nbsp;&nbsp;$ <span id="valor">@ViewBag.vaga.Valor</span></h4>
+            }
+            else
+            {
+                <h4 style="font-weight: bolder; font-size: 3rem;">Moeda: <span id="moeda">Euro</span> €</h4>
+                <h4 id="valor" style="font-weight: bolder; font-size: 3rem;">Valor:  &nbsp;&nbsp;&nbsp;€ <span id="valor">@ViewBag.vaga.Valor</span></h4>
+            }
+
+        </div>
+        <div class="col-md-6">
+            <div>
+                <input type="hidden" id="inssv" name="inss" readonly value=0 />
+                <label class="col-sm-6" for="inssv">APLICAR INSS?</label>
+                <input type="radio" onclick="calcular(1)" class="btn-check" name="inss" id="option1" autocomplete="off">
+                <label class="btn btn-secondary" for="option1">Sim</label>
+                <input type="radio" onclick="calcular(0)" class="btn-check" name="inss" id="option2" autocomplete="off" checked>
+                <label class="btn btn-secondary" for="option2">Não</label>
+            </div>
+            <div>
+                <table class="table table-bordered" style="font-size: 2rem; font-weight: bold;">
+                    <tr>
+                        <td id="cotacaonome"></td>
+                        <td id="cotacao" style="text-align: right;"></td>
+                    </tr>
+                    <tr>
+                        <td>Valor Convertido</td>
+                        <td id="convertido" style="text-align: right;"></td>
+                    </tr>
+                    <tr>
+                        <td>Porcentagem IRRF</td>
+                        <td id="porcentagem" style="text-align: right;"></td>
+                    </tr>
+                    <tr>
+                        <td>Imposto Total</td>
+                        <td id="imposto" style="text-align: right;"></td>
+                    </tr>
+                    <tr id="hideinss">
+                        <td>INSS</td>
+                        <td id="inss" style="text-align: right;"></td>
+                    </tr>
+                    <tr style="font-size: 3rem">
+                        <td>Salário Final</td>
+                        <td id="salario" style="text-align: right;"></td>
+                    </tr>
+                </table>
+            </div>
+            <br />
+            <p style="text-align:right;"><a class="btn btn-default" href="/Vagas/Visualizar/@ViewBag.vaga.Id">Salvar Vaga nos Favoritos &raquo;</a></p>
+        </div>
+    </div>
+    <h6>* Para mais informações acesse o link da vaga.</h6>
+    <hr />
+    <div class="row  col-md-offset-0">
+        <div class="col-md-12">
+            <h3 style="font-weight: bolder; font-size: 3.5rem;">Detalhes da vaga:</h3>
+            <p style="white-space: pre-line;">@ViewBag.vaga.Descricao</p>
+        </div>
+    </div>
+</div>
+<div class="jumbotron desc">
+</div>

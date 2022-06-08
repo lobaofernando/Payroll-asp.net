@@ -1,0 +1,81 @@
+﻿<h2>@ViewBag.Title</h2>
+<h3>@ViewBag.Message</h3>
+<script>
+    function change(value) {
+        document.getElementById("moeda").value = value;
+    }
+    function change2(value) {
+        document.getElementById("regiao").value = value;
+    }
+</script>
+<form action="/Vagas/salvar" method="post">
+    <div class="row col-md-offset-3">
+        <input type="hidden" id="moeda" name="moeda" readonly value="1" />
+        <label class="col-sm-2" for="moeda">Moeda</label>
+        <div class="col-sm-6">
+            <input type="radio" onclick="change(1)" class="btn-check" name="moedas" id="option1" autocomplete="off" checked>
+            <label class="btn btn-secondary" for="option1">Dólar</label>
+
+            <input type="radio" onclick="change(2)" class="btn-check" name="moedas" id="option2" autocomplete="off">
+            <label class="btn btn-secondary" for="option2">Euro</label>
+        </div>
+    </div>
+    <div class="row col-md-offset-3">
+        <label class="col-sm-2 col-form-label" for="nome">Nome</label>
+        <div class="col-sm-6">
+            <input class="form-control" type="text" id="nome" name="nome" />
+        </div>
+    </div>
+    <div class="row col-md-offset-3">
+        <label class="col-sm-2" for="previa">Prévia</label>
+        <div class="col-sm-6">
+            <input class="form-control" type="text" id="previa" name="previa" />
+        </div>
+    </div>
+    <div class="row col-md-offset-3">
+        <label class="col-sm-2" for="link">Link</label>
+        <div class="col-sm-6">
+            <input class="form-control" type="text" id="link" name="link" />
+        </div>
+    </div>
+    <div class="row col-md-offset-3">
+        <label class="col-sm-2" for="valor">Valor</label>
+        <div class="col-sm-6">
+            <input class="form-control" type="number" id="valor" name="valor" />
+        </div>
+    </div>
+    <div class="row  col-md-offset-3">
+        <label class="col-sm-2" for="descricao">Descrição</label>
+        <div class="col-sm-6">
+            <textarea name="descricao" class="form-control" id="descricao" rows="4"></textarea>
+        </div>
+    </div>
+    <div class="row  col-md-offset-3">
+        <br />
+        <input type="hidden" id="regiao" name="regiao" readonly value="0" />
+        <label class="col-sm-1" for="regiao">Região:</label>
+        <div class="col-sm-8">
+            <input type="radio" onclick="change2(1)" class="btn-check" name="regioes" id="option-1" autocomplete="off" checked>
+            <label class="btn btn-secondary" for="option-1">Europa</label>
+            <input type="radio" onclick="change2(2)" class="btn-check" name="regioes" id="option-2" autocomplete="off" checked>
+            <label class="btn btn-secondary" for="option-2">América</label>
+            <input type="radio" onclick="change2(3)" class="btn-check" name="regioes" id="option-3" autocomplete="off" checked>
+            <label class="btn btn-secondary" for="option-3">Ásia</label>
+            <input type="radio" onclick="change2(4)" class="btn-check" name="regioes" id="option-4" autocomplete="off" checked>
+            <label class="btn btn-secondary" for="option-4">África</label>
+            <input type="radio" onclick="change2(5)" class="btn-check" name="regioes" id="option-5" autocomplete="off" checked>
+            <label class="btn btn-secondary" for="option-5">Oceania</label>
+
+            <input type="radio" onclick="change2(0)" class="btn-check" name="regioes" id="option-0" autocomplete="off">
+            <label class="btn btn-secondary" for="option-0">Outro</label>
+        </div>
+        <br />
+        <br />
+        <br />
+    </div>
+    <div class="button">
+        <button type="submit">Salvar</button>
+        <button type="reset"><a style="text-decoration: none; color: black" href="/Home/Vagas_User">Cancelar</a></button>
+    </div>
+
+</form>
